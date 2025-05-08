@@ -9,6 +9,7 @@ import {
   SHARED_SIDEBAR_PATHS,
 } from './shared-route-config.js';
 import { pluginRss } from '@rspress/plugin-rss';
+import { pluginLlms } from '@rspress/plugin-llms';
 import { pluginSass } from '@rsbuild/plugin-sass';
 import { pluginLess } from '@rsbuild/plugin-less';
 
@@ -19,7 +20,6 @@ export default defineConfig({
   route: {
     exclude: ['lynx-compat-data/**/*'],
   },
-  ssg: { strict: true },
   title: 'Lynx',
   description:
     'Empower the web community and invite more to build cross-platform apps',
@@ -123,6 +123,7 @@ export default defineConfig({
     sidebar: {},
   },
   plugins: [
+    pluginLlms(),
     rspeedyApiPlugin(),
     sharedSidebarPlugin(),
     pluginRss({
