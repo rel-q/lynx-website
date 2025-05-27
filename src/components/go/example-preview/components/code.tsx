@@ -21,12 +21,16 @@ export const Code: FC<CodeProps> = ({
   isFirstShowCode,
   setIsFirstShowCode,
 }) => {
-  const containerRef = useRef<HTMLPreElement>(null);
+  const [rendered, setRendered] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [highlightVal, setHighlightVal] = useState(highlight);
   const defaultValRef = useRef(val);
 
   useEffect(() => {
     if (!val) {
+      return;
+    }
+    if (!rendered) {
       return;
     }
     if (isFirstShowCode) {
@@ -36,17 +40,21 @@ export const Code: FC<CodeProps> = ({
         setIsFirstShowCode(false);
         if (firstHighlight > 3) {
           if (firstHighlight && containerRef.current) {
-            const firstHighlightElement = containerRef.current.querySelector(
-              `pre.shiki code span.highlighted`,
-            );
+            const container = containerRef.current;
+            if (container) {
+              const firstHighlightElement = containerRef.current.querySelector(
+                `pre.shiki code span.highlighted`,
+              );
 
-            if (firstHighlightElement) {
-              const container = containerRef.current.parentElement;
-              if (container) {
-                const offsetTop =
-                  firstHighlightElement.getBoundingClientRect().top -
-                  containerRef.current.getBoundingClientRect().top;
-                container.scrollTo({ top: offsetTop, behavior: 'smooth' });
+              if (firstHighlightElement) {
+                const container = containerRef.current.parentElement;
+                if (container) {
+                  const offsetTop =
+                    firstHighlightElement.getBoundingClientRect().top -
+                    containerRef.current.getBoundingClientRect().top -
+                    50;
+                  container.scrollTo({ top: offsetTop, behavior: 'smooth' });
+                }
               }
             }
           }
@@ -68,17 +76,19 @@ export const Code: FC<CodeProps> = ({
         }, 0);
       }
     }
-  }, [val, highlight, isFirstShowCode]);
+  }, [val, rendered, highlight, isFirstShowCode]);
 
   // fixed tab change highlight delay
   useEffect(() => {
     setHighlightVal(highlight);
   }, [highlight]);
   return (
-    <div>
+    <div ref={containerRef}>
       <CodeBlockRuntime
-        ref={containerRef}
         lang={language}
+        onRendered={() => {
+          setRendered(true);
+        }}
         code={val}
         shikiOptions={{
           transformers: [
