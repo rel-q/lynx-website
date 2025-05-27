@@ -12,6 +12,8 @@ import {
   SHARED_DOC_FILES,
   SHARED_SIDEBAR_PATHS,
 } from './shared-route-config.js';
+import { transformerNotationHighlight } from '@shikijs/transformers';
+import { transformerCompatibleMetaHighlight } from '@rspress/plugin-shiki/transformers';
 
 const PUBLISH_URL = 'https://lynxjs.org/';
 
@@ -162,15 +164,12 @@ export default defineConfig({
   markdown: {
     defaultWrapCode: false,
     checkDeadLinks: true,
-    highlightLanguages: [
-      ['js', 'javascript'],
-      ['ts', 'typescript'],
-      ['oc', 'objectivec'],
-      ['objc', 'objectivec'],
-      ['objective-c', 'objectivec'],
-      ['md', 'markdown'],
-      ['mdx', 'markdown'],
-    ],
+    shiki: {
+      transformers: [
+        transformerCompatibleMetaHighlight(),
+        transformerNotationHighlight(),
+      ],
+    },
   },
 });
 

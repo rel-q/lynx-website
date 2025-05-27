@@ -42,13 +42,13 @@
         margin: 0;
         border-radius: 0;
       }
-      pre.code {
+      pre.shiki {
         min-height: 567px;
       }
     }
     .code-view-container-tab-show {
       :global {
-        pre.code {
+        pre.shiki {
           min-height: 520px;
         }
       }
@@ -160,13 +160,13 @@
         height: 370px !important;
         width: 100% !important;
       }
-      pre.code {
+      pre.shiki {
         min-height: 371px !important;
       }
     }
     .code-view-container-tab-show {
       :global {
-        pre.code {
+        pre.shiki {
           min-height: 324px !important;
         }
       }

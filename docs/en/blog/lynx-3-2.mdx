@@ -214,6 +214,7 @@ In your project's `build.gradle` or `build.gradle.kts` file, update the LynxServ
 <Tabs groupId='update-lynx-3-2-with-existing-app'>
 <Tab label="build.gradle">
 <CodeFold height={360} toggle>
+
 ```groovy title=build.gradle {8-24}
 dependencies {
     // lynx dependencies
@@ -241,13 +242,14 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:4.9.0"
 
 }
+```
 
-````
 </CodeFold>
 </Tab>
 
 <Tab label="build.gradle.kts">
 <CodeFold height={360} toggle>
+
 ```groovy title=build.gradle.kts {8-24}
 dependencies {
     // lynx dependencies
@@ -274,7 +276,7 @@ dependencies {
 
     implementation("com.squareup.okhttp3:okhttp:4.9.0")
 }
-````
+```
 
 </CodeFold>
 </Tab>
@@ -285,6 +287,7 @@ dependencies {
 In your project's `Podfile` file, update the Lynx version as follows:
 
 <CodeFold height={360} toggle>
+
 ```ruby title="Podfile" {1,6-8,10}
 source 'https://cdn.cocoapods.org/'
 
@@ -297,13 +300,14 @@ pod 'Lynx', '3.2.0', :subspecs => [
 
 pod 'PrimJS', '2.12.0', :subspecs => ['quickjs', 'napi']
 end
+```
 
-````
 </CodeFold>
 
 In your project's `Podfile` file, update the LynxService version as follows:
 
 <CodeFold height={360} toggle>
+
 ```ruby title="Podfile" {8-13,15-17}
 source 'https://cdn.cocoapods.org/'
 platform :ios, '10.0'
@@ -324,7 +328,7 @@ target 'YourTarget' do
   pod 'SDWebImageWebPCoder', '0.11.0'
 
 end
-````
+```
 
 </CodeFold>
 

@@ -2,6 +2,9 @@ import { FC, useEffect, useRef, useState } from 'react';
 import { CodeBlockRuntime } from '@theme';
 
 import { getHighlightLines } from '../utils/example-data';
+import { transformerNotationHighlight } from '@shikijs/transformers';
+import { transformerLineNumber } from '@rspress/plugin-shiki/transformers';
+import { transformerRuntimeMetaHighlight } from './shiki-transformer';
 
 interface CodeProps {
   val: string;
@@ -18,10 +21,10 @@ export const Code: FC<CodeProps> = ({
   isFirstShowCode,
   setIsFirstShowCode,
 }) => {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLPreElement>(null);
   const [highlightVal, setHighlightVal] = useState(highlight);
-  console.log(highlightVal, 22222);
   const defaultValRef = useRef(val);
+
   useEffect(() => {
     if (!val) {
       return;
@@ -34,7 +37,7 @@ export const Code: FC<CodeProps> = ({
         if (firstHighlight > 3) {
           if (firstHighlight && containerRef.current) {
             const firstHighlightElement = containerRef.current.querySelector(
-              `pre.code > code > span:nth-of-type(${firstHighlight - 2})`,
+              `pre.shiki code span.highlighted`,
             );
 
             if (firstHighlightElement) {
@@ -72,8 +75,25 @@ export const Code: FC<CodeProps> = ({
     setHighlightVal(highlight);
   }, [highlight]);
   return (
-    <div ref={containerRef}>
-      <CodeBlockRuntime lang={language} code={val} children={<></>} />
+    <div>
+      <CodeBlockRuntime
+        ref={containerRef}
+        lang={language}
+        code={val}
+        shikiOptions={{
+          transformers: [
+            transformerNotationHighlight(),
+            transformerLineNumber(),
+            ...(highlightVal
+              ? [
+                  transformerRuntimeMetaHighlight({
+                    highlightVal,
+                  }),
+                ]
+              : []),
+          ],
+        }}
+      />
     </div>
   );
 };
