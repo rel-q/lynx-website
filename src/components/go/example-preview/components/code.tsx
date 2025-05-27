@@ -1,5 +1,5 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
-import { getCustomMDXComponent } from '@theme';
+import { FC, useEffect, useRef, useState } from 'react';
+import { CodeBlockRuntime } from '@theme';
 
 import { getHighlightLines } from '../utils/example-data';
 
@@ -18,9 +18,9 @@ export const Code: FC<CodeProps> = ({
   isFirstShowCode,
   setIsFirstShowCode,
 }) => {
-  const Comp = getCustomMDXComponent();
   const containerRef = useRef<HTMLDivElement>(null);
   const [highlightVal, setHighlightVal] = useState(highlight);
+  console.log(highlightVal, 22222);
   const defaultValRef = useRef(val);
   useEffect(() => {
     if (!val) {
@@ -73,16 +73,7 @@ export const Code: FC<CodeProps> = ({
   }, [highlight]);
   return (
     <div ref={containerRef}>
-      <Comp.pre>
-        <Comp.code
-          meta={highlightVal}
-          className={`language-${language}`}
-          codeHighlighter="prism"
-          codeWrap={false}
-        >
-          {val}
-        </Comp.code>
-      </Comp.pre>
+      <CodeBlockRuntime lang={language} code={val} children={<></>} />
     </div>
   );
 };
