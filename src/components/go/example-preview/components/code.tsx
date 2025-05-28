@@ -39,25 +39,28 @@ export const Code: FC<CodeProps> = ({
         const firstHighlight = highlightLines[0];
         setIsFirstShowCode(false);
         if (firstHighlight > 3) {
-          if (firstHighlight && containerRef.current) {
-            const container = containerRef.current;
-            if (container) {
-              const firstHighlightElement = containerRef.current.querySelector(
-                `pre.shiki code span.highlighted`,
-              );
+          setTimeout(() => {
+            if (containerRef.current) {
+              const container = containerRef.current;
+              if (container) {
+                const firstHighlightElement =
+                  containerRef.current.querySelector(
+                    `pre.shiki code span.highlighted`,
+                  );
 
-              if (firstHighlightElement) {
-                const container = containerRef.current.parentElement;
-                if (container) {
-                  const offsetTop =
-                    firstHighlightElement.getBoundingClientRect().top -
-                    containerRef.current.getBoundingClientRect().top -
-                    50;
-                  container.scrollTo({ top: offsetTop, behavior: 'smooth' });
+                if (firstHighlightElement) {
+                  const container = containerRef.current.parentElement;
+                  if (container) {
+                    const offsetTop =
+                      firstHighlightElement.getBoundingClientRect().top -
+                      containerRef.current.getBoundingClientRect().top -
+                      50;
+                    container.scrollTo({ top: offsetTop, behavior: 'smooth' });
+                  }
                 }
               }
             }
-          }
+          });
         }
         defaultValRef.current = val;
       }
