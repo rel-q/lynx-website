@@ -3,6 +3,7 @@ import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 import React, { useCallback, useEffect, useState } from 'react';
 import { mapPlatformNameToIconName } from '../api-table/compat-table/headers';
+import { NoSSR } from 'rspress/runtime';
 
 type Platform =
   | 'ios'
@@ -134,26 +135,7 @@ function OptionSelector({
 //  FIXME: this is a hack for hook Rspress update the TOC */
 let renderCountForTocUpdate = 0;
 
-/**
- * A radio group interface for showing platform-specific content for iOS, Android and Web.
- * Uses a card-based layout with radio buttons for platform selection.
- *
- * @example
- * ```tsx
- * <PlatformTabs defaultPlatform="ios" hashKey="platform-example">
- *   <PlatformTabs.Tab platform="ios">
- *     <p>iOS content</p>
- *   </PlatformTabs.Tab>
- *   <PlatformTabs.Tab platform="android">
- *     <p>Android content</p>
- *   </PlatformTabs.Tab>
- *   <PlatformTabs.Tab platform="web">
- *     <p>Web content</p>
- *   </PlatformTabs.Tab>
- * </PlatformTabs>
- * ```
- */
-export const PlatformTabs = ({
+const PlatformTabsComponent = ({
   defaultPlatform = 'ios',
   children,
   className,
@@ -171,6 +153,9 @@ export const PlatformTabs = ({
 
   // Get platform from hash or use default
   const getPlatformFromHash = useCallback(() => {
+    if (typeof window === 'undefined') {
+      return defaultPlatform;
+    }
     const hash = window.location.hash.slice(1);
     const hashParts = hash.split(',');
     const platformFromHash = hashParts
@@ -275,6 +260,32 @@ export const PlatformTabs = ({
         <h2 style={{ display: 'none' }} />
       ) : null}
     </>
+  );
+};
+/**
+ * A radio group interface for showing platform-specific content.
+ * Uses a card-based layout with platform icons for platform selection.
+ *
+ * @example
+ * ```tsx
+ * <PlatformTabs defaultPlatform="ios" hashKey="platform-example">
+ *   <PlatformTabs.Tab platform="ios">
+ *     <p>iOS content</p>
+ *   </PlatformTabs.Tab>
+ *   <PlatformTabs.Tab platform="android">
+ *     <p>Android content</p>
+ *   </PlatformTabs.Tab>
+ *   <PlatformTabs.Tab platform="web">
+ *     <p>Web content</p>
+ *   </PlatformTabs.Tab>
+ * </PlatformTabs>
+ * ```
+ */
+export const PlatformTabs = (props: PlatformTabsProps) => {
+  return (
+    <NoSSR>
+      <PlatformTabsComponent {...props} />
+    </NoSSR>
   );
 };
 

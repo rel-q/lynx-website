@@ -4,6 +4,7 @@ import { Card, CardContent } from '../ui/card';
 import { Label } from '../ui/label';
 import { PlatformIcon } from './PlatformIcon';
 import { Platform } from './types';
+import { NoSSR } from 'rspress/runtime';
 
 const PLATFORM_OPTIONS: Array<{
   id: Platform;
@@ -113,26 +114,7 @@ function OptionSelector({
   );
 }
 
-/**
- * A radio group interface for showing platform-specific content.
- * Uses a card-based layout with platform icons for platform selection.
- *
- * @example
- * ```tsx
- * <PlatformTabs defaultPlatform="ios" hashKey="platform-example">
- *   <PlatformTabs.Tab platform="ios">
- *     <p>iOS content</p>
- *   </PlatformTabs.Tab>
- *   <PlatformTabs.Tab platform="android">
- *     <p>Android content</p>
- *   </PlatformTabs.Tab>
- *   <PlatformTabs.Tab platform="web">
- *     <p>Web content</p>
- *   </PlatformTabs.Tab>
- * </PlatformTabs>
- * ```
- */
-export const PlatformTabs = ({
+const PlatformTabsComponent = ({
   defaultPlatform = 'ios',
   children,
   className,
@@ -150,6 +132,9 @@ export const PlatformTabs = ({
 
   // Get platform from hash or use default
   const getPlatformFromHash = useCallback(() => {
+    if (typeof window === 'undefined') {
+      return defaultPlatform;
+    }
     const hash = window.location.hash.slice(1);
     const hashParts = hash.split(',');
     const platformFromHash = hashParts
@@ -231,6 +216,33 @@ export const PlatformTabs = ({
       />
       {activeTabContent}
     </div>
+  );
+};
+
+/**
+ * A radio group interface for showing platform-specific content.
+ * Uses a card-based layout with platform icons for platform selection.
+ *
+ * @example
+ * ```tsx
+ * <PlatformTabs defaultPlatform="ios" hashKey="platform-example">
+ *   <PlatformTabs.Tab platform="ios">
+ *     <p>iOS content</p>
+ *   </PlatformTabs.Tab>
+ *   <PlatformTabs.Tab platform="android">
+ *     <p>Android content</p>
+ *   </PlatformTabs.Tab>
+ *   <PlatformTabs.Tab platform="web">
+ *     <p>Web content</p>
+ *   </PlatformTabs.Tab>
+ * </PlatformTabs>
+ * ```
+ */
+export const PlatformTabs = (props: PlatformTabsProps) => {
+  return (
+    <NoSSR>
+      <PlatformTabsComponent {...props} />
+    </NoSSR>
   );
 };
 

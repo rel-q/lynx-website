@@ -5,6 +5,7 @@ import { ExampleContent } from './components';
 import { isAssetFileType } from './utils/example-data';
 import Callout from '../../Callout';
 import { SchemaOptionsData } from './hooks/use-switch-schema';
+import { NoSSR } from 'rspress/runtime';
 
 const EXAMPLE_BASE_URL = '/lynx-examples';
 
@@ -36,7 +37,7 @@ export interface ExamplePreviewProps {
   schemaOptions?: SchemaOptionsData;
 }
 
-export const ExamplePreview = ({
+const ExamplePreviewComponent = ({
   example,
   defaultFile = 'package.json',
   defaultEntryFile,
@@ -189,5 +190,13 @@ export const ExamplePreview = ({
       schemaOptions={schema ? undefined : schemaOptions}
       exampleGitBaseUrl={exampleData?.exampleGitBaseUrl}
     />
+  );
+};
+
+export const ExamplePreview = (props: ExamplePreviewProps) => {
+  return (
+    <NoSSR>
+      <ExamplePreviewComponent {...props} />
+    </NoSSR>
   );
 };
