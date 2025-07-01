@@ -1,0 +1,22 @@
+{
+  "name": "css-extract",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "extract": "pnpm tsx ./extract-properties.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^18.11.17",
+    "fast-glob": "^3.3.3",
+    "gray-matter": "^4.0.3",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "css-tree": "^3.1.0"
+  }
+}
