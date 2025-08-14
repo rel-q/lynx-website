@@ -1141,8 +1141,8 @@
     "label": "GenericResourceFetcher",
     "collapsible": true,
     "collapsed": true
-   },
-   {
+  },
+  {
     "type": "file",
     "name": "lynx-native-api/lynx-load-meta",
     "label": "LynxLoadMeta",
@@ -1173,7 +1173,7 @@
     "name": "lynx-native-api/template-bundle",
     "label": "TemplateBundle",
     "collapsible": true,
-    "collapsed": true
+    "collapsed": true,
     "overviewHeaders": []
   },
   {

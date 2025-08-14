@@ -1165,7 +1165,7 @@
     "name": "lynx-native-api/template-bundle",
     "label": "TemplateBundle",
     "collapsible": true,
-    "collapsed": true
+    "collapsed": true,
     "overviewHeaders": []
   },
   {
@@ -1173,7 +1173,7 @@
     "name": "lynx-native-api/template-data",
     "label": "TemplateData",
     "collapsible": true,
-    "collapsed": true
+    "collapsed": true,
     "overviewHeaders": []
   },
   {
