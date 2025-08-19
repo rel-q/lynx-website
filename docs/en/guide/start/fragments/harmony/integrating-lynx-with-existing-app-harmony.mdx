@@ -13,13 +13,13 @@ import { Tab, Tabs } from 'rspress/theme';
 
 <Steps>
 ### Package Dependencies
-1. **Lynx-Related Version Dependencies** 
+1. **Lynx-Related Version Dependencies**
 
 The core capabilities of the [Lynx Engine](/guide/spec.html#engine), including parsing the [Bundle](/guide/spec.html#lynx-bundle-or-bundle), style parsing, layout, rendering views, and the basic JavaScript runtime code that Lynx pages depend on.
 
-Lynx Service, which includes `LynxDevtoolService`, `LynxLogService`, and more, is designed to provide capabilities closely related to host application features, allowing the host application to inject custom implementations at runtime.
+Lynx Service, which includes `LynxDevtoolService`, `LynxLogService`, and more, is designed to provide capabilities closely related to host application features, allowing the host application to inject custom implementations at runtime, or use the default implementations provided by Lynx. For example, LynxHttpService uses the built-in HTTP module of HarmonyOS by default. Lynx provides standard native Log and HTTP service capabilities, allowing integrators to quickly integrate and use them;
 
-```groovy title=oh-package.json5 {2-7}
+```json5 title=oh-package.json5 {2-7}
 "dependencies": {
   "@ohos/imageknife": "3.2.6",
   "@lynx/lynx": "0.0.1-alpha.4",
@@ -37,13 +37,14 @@ Lynx Service, which includes `LynxDevtoolService`, `LynxLogService`, and more, i
 
 To import `libc++_shared.so`, you need to configure Native C++. This requires defining a `CMakeLists.txt` file.
 
-```groovy title=CMakeLists.txt
+```cmake title=CMakeLists.txt
 # the minimum version of CMake.
 cmake_minimum_required(VERSION 3.5.0)
 project(MyApplication)
 ```
 And modify the `buildOptions` in `entry/build-profile.json5`:
-```groovy title=build-profile.json5 {3-7}
+
+```json5 title=build-profile.json5 {3-7}
 {
   "buildOption": {
     "externalNativeOptions": {
@@ -59,7 +60,7 @@ And modify the `buildOptions` in `entry/build-profile.json5`:
 
 If you need to request network resources, configure `requestPermissions` in `module.json5` to enable network requests.
 
-```groovy title=module.json5 {3-14}
+```json5 title=module.json5 {3-14}
 {
   "module": {
     "requestPermissions": [
@@ -79,7 +80,7 @@ If you need to request network resources, configure `requestPermissions` in `mod
 ```
 And configure the `network` key field in `entry/src/main/resources/base/element/string.json`:
 
-```groovy title=string.json {3-6}
+```json title=string.json {3-6}
 {
   "string": [
     {
@@ -98,7 +99,7 @@ And configure the `network` key field in `entry/src/main/resources/base/element/
 
 `Lynx Service` provides capabilities related to host features. It is recommended to complete the `Lynx Service` initialization in the `OnCreate` lifecycle of `EntryAbility`.
 
-``` groovy title=EntryAbility.ets
+```ts title=EntryAbility.ets
 import { LLog, LynxServiceCenter, LynxEnv, LynxServiceType } from '@lynx/lynx';
 import { LynxDevToolService } from '@lynx/lynx_devtool_service';
 import { LynxLogService } from '@lynx/lynx_log_service';
@@ -106,14 +107,14 @@ import { LynxHttpService } from '@lynx/lynx_http_service';
 
 export default class EntryAbility extends UIAbility {
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
-    
-    // Init LynxDevtool
+
+    // Init LynxDevtoolService
     LynxServiceCenter.registerService(LynxServiceType.DevTool, LynxDevToolService.instance);
-    // Init LynxHttp
+    // Init LynxHttpService
     LynxServiceCenter.registerService(LynxServiceType.Http, LynxHttpService.instance);
-    // Init LynxLog
+    // Init LynxLogService
     LynxServiceCenter.registerService(LynxServiceType.Log, LynxLogService.instance);
-    
+
     hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onCreate');
   }
 }
@@ -122,11 +123,13 @@ export default class EntryAbility extends UIAbility {
 
 `LynxEnv` provides the global initialization interface for the `Lynx Engine`. Please ensure that `LynxEnv` is initialized before any other `Lynx Engine` interfaces are called. For example, this can be done in the `OnCreate` lifecycle of `EntryAbility`.
 
-``` groovy title=EntryAbility.ets
+```ts title=EntryAbility.ets
 import { LLog, LynxEnv } from '@lynx/lynx';
 
 export default class EntryAbility extends UIAbility {
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
+    // Init LynxService
+    // ...
     // Init LynxEnv
     LLog.useSysLog(true);
     LynxEnv.initialize(this.context);
@@ -159,10 +162,10 @@ Bundle Example:
 
 ```
 entry
-└── src    
-    └── main        
-        └── resources  
-            └── rawfile             
+└── src
+    └── main
+        └── resources
+            └── rawfile
                  └── main.lynx.bundle
 ```
 
@@ -171,7 +174,7 @@ entry
 `LynxTemplateResourceFetcher` provides the capability to load Bundle template resources. You need to implement the `fetchTemplate` method to handle the loading.
 
 <CodeFold>
-``` groovy title=ExampleTemplateResourceFetcher.ets
+``` ts title=ExampleTemplateResourceFetcher.ets
 import { LLog, LynxResourceRequest, LynxTemplateResourceFetcher, TemplateProviderResult } from '@lynx/lynx';
 import { AsyncCallback, BusinessError } from '@ohos.base';
 import http from '@ohos.net.http';
@@ -221,7 +224,7 @@ export class ExampleTemplateResourceFetcher extends LynxTemplateResourceFetcher 
 `LynxMediaResourceFetcher` provides the capability to load media resources.
 
 <CodeFold>
-``` groovy title=ExampleMediaResourceFetcher.ets
+``` ts title=ExampleMediaResourceFetcher.ets
 import { LynxMediaResourceFetcher, LynxResourceRequest, LynxOptionalBool } from '@lynx/lynx';
 
 export class ExampleMediaResourceFetcher extends LynxMediaResourceFetcher {
@@ -242,7 +245,7 @@ export class ExampleMediaResourceFetcher extends LynxMediaResourceFetcher {
 `LynxGenericResourceFetcher` provides the capability to load generic resources. You need to implement the `fetchResource` method to handle the loading.
 
 <CodeFold>
-```groovy title=ExampleGenericResourceFetcher.ets
+```ts title=ExampleGenericResourceFetcher.ets
 import { LynxError, LynxSubErrorCode, LynxGenericResourceFetcher, LynxResourceRequest, LynxResourceType, LynxStreamDelegate } from '@lynx/lynx';
 import { AsyncCallback, BusinessError } from '@ohos.base';
 import http from '@ohos.net.http';
@@ -312,7 +315,7 @@ export class ExampleGenericResourceFetcher extends LynxGenericResourceFetcher {
 
 Once you have completed the steps above, you have finished all the necessary work for creating the `LynxView` and reading its resources. You can now render the corresponding Bundle content onto the `LynxView`.
 <CodeFold>
-``` groovy title=Index.ets
+``` ts title=Index.ets
 import {
   LynxTemplateResourceFetcher,
   LynxMediaResourceFetcher,
