@@ -50,7 +50,7 @@ export class LynxExplorerInput extends UIBase {
 全局注册的元件可以在多个 `LynxView` 实例中共享。
 
 ```typescript {3,17}
-import { BUILTIN_BEHAVIORS } from '@lynx/lynx/src/main/ets/tasm/behavior/Behavior';
+import { BUILTIN_BEHAVIORS } from '@lynx/lynx';
 
 export class CustomElement {
   private static initialized = false;
@@ -375,19 +375,20 @@ export class LynxExplorerInputShadowNode extends ShadowNode {
 ```
 
 </CodeFold>
-`参数`:
 
-width宽度限制，可能是 0
+对应的参数说明：
 
-widthMode：0: undefined、1: exactly、2: at_most
+`width`: 宽度限制；
 
-height高度限制，可能是 0
+`widthMode`: 宽度约束模式， 类型是 `MeasureMode`；
 
-heightMode: 0: undefined、1: exactly、2: at_most
+`height`: 高度限制；
 
-`返回值`:
+`heightMode`: 高度约束模式， 类型是 `MeasureMode`；
 
-返回值是一个数组，需要返回3个值：宽度、高度、Baseline（影响 vertical 对齐，默认传0）
+返回值说明：
+
+返回值是一个数组，需要返回 3 个值：宽度、高度、Baseline（影响 vertical 对齐，默认传0）
 
 #### `UI` 与 `ShadowNode` 的通信
 

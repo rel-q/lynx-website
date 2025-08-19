@@ -374,19 +374,20 @@ export class LynxExplorerInputShadowNode extends ShadowNode {
 ```
 
 </CodeFold>
-`Parameters`:
 
-width: Width constraint, may be 0
+Parameter descriptions:
 
-widthMode: 0: undefined, 1: exactly, 2: at_most
+`width`: Width constraint;
 
-height: Height constraint, may be 0
+`widthMode`: Width constraint mode, type is `MeasureMode`;
 
-heightMode: 0: undefined, 1: exactly, 2: at_most
+`height`: Height constraint;
 
-`Return Value`:
+`heightMode`: Height constraint mode, type is `MeasureMode`;
 
-The return value is an array that needs to return 3 values: width, height, Baseline (affects vertical alignment, default to 0)
+Return Value Description:
+
+The return value is an array that needs to return 3 values: width, height, and Baseline (affects vertical alignment, default is 0)
 
 #### Communication between `UI` and `ShadowNode`
 

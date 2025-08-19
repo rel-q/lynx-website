@@ -13,13 +13,13 @@ import { Tab, Tabs } from 'rspress/theme';
 
 <Steps>
 ### 包依赖
-1. **Lynx 相关版本依赖** 
+1. **Lynx 相关版本依赖**
 
-[Lynx Engine](/guide/spec.html#engine) 核心能力，包含了解析 [Bundle](/guide/spec.html#lynx-bundle-or-bundle)、样式解析、排版以及渲染视图等基础能力，以及 Lynx 页面依赖的 JavaScript 运行时基础代码
+[Lynx Engine](/guide/spec.html#engine) 核心能力，包含了解析 [Bundle](/guide/spec.html#lynx-bundle-or-bundle)、样式解析、排版以及渲染视图等基础能力，以及 Lynx 页面依赖的 JavaScript 运行时基础代码。
 
-Lynx Service 包括 `LynxDevtoolService`、`LynxLogService` 等，旨在提供一些宿主应用特性强相关的能力，允许宿主应用在运行时注入自定义实现.
+Lynx Service 包括 `LynxDevtoolService`、`LynxLogService` 等，旨在提供一些宿主应用特性强相关的能力，允许宿主应用在运行时注入自定义实现，也可以使用 Lynx 提供的默认实现。例如 LynxHttpService 默认是使用鸿蒙内置的 http 模块实现。Lynx 提供了标准的原生 Log、Http 服务的能力，接入方可以快速接入并使用；
 
-```groovy title=oh-package.json5 {2-7}
+```json5 title=oh-package.json5 {2-7}
 "dependencies": {
   "@ohos/imageknife": "3.2.6",
   "@lynx/lynx": "0.0.1-alpha.4",
@@ -35,15 +35,16 @@ Lynx Service 包括 `LynxDevtoolService`、`LynxLogService` 等，旨在提供�
 
 1. **Native C++ 配置**
 
-为了引入 `libc++_shared.so` 需要进行 Native C++ 相关配置，需要定义 `CMakeLists.txt`
+为了引入 `libc++_shared.so` 需要进行 Native C++ 相关配置，需要定义 `CMakeLists.txt`。
 
-```groovy title=CMakeLists.txt
+```cmake title=CMakeLists.txt
 # the minimum version of CMake.
 cmake_minimum_required(VERSION 3.5.0)
 project(MyApplication)
 ```
 并且修改 `entry/build-profile.json5` 中的 `buildOptions`
-```groovy title=build-profile.json5 {3-7}
+
+```json5 title=build-profile.json5 {3-7}
 {
   "buildOption": {
     "externalNativeOptions": {
@@ -59,7 +60,7 @@ project(MyApplication)
 
 如果需要请求网络资源，请在 `module.json5` 配置 `requestPermissions` 来启用网络请求。
 
-```groovy title=module.json5 {3-14}
+```json5 title=module.json5 {3-14}
 {
   "module": {
     "requestPermissions": [
@@ -77,9 +78,10 @@ project(MyApplication)
 }
 }
 ```
-并且在 `entry/src/main/resources/base/element/string.json` 中配置 `network` 关键字段
 
-```groovy title=string.json {3-6}
+并且在 `entry/src/main/resources/base/element/string.json` 中配置 `network` 关键字段。
+
+```json title=string.json {3-6}
 {
   "string": [
     {
@@ -98,7 +100,7 @@ project(MyApplication)
 
 `Lynx Service` 提供了宿主特性相关能力，推荐在 `EntryAbility` 的 `OnCreate` 生命周期中完成 `Lynx Service` 的初始化。
 
-``` groovy title=EntryAbility.ets
+```ts title=EntryAbility.ets
 import { LLog, LynxServiceCenter, LynxEnv, LynxServiceType } from '@lynx/lynx';
 import { LynxDevToolService } from '@lynx/lynx_devtool_service';
 import { LynxLogService } from '@lynx/lynx_log_service';
@@ -106,14 +108,14 @@ import { LynxHttpService } from '@lynx/lynx_http_service';
 
 export default class EntryAbility extends UIAbility {
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
-    
-    // Init LynxDevtool
+
+    // Init LynxDevtoolService
     LynxServiceCenter.registerService(LynxServiceType.DevTool, LynxDevToolService.instance);
-    // Init LynxHttp
+    // Init LynxHttpService
     LynxServiceCenter.registerService(LynxServiceType.Http, LynxHttpService.instance);
-    // Init LynxLog
+    // Init LynxLogService
     LynxServiceCenter.registerService(LynxServiceType.Log, LynxLogService.instance);
-    
+
     hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onCreate');
   }
 }
@@ -122,11 +124,13 @@ export default class EntryAbility extends UIAbility {
 
 `LynxEnv` 提供了 `Lynx Engine` 的全局初始化接口。请保证 `LynxEnv` 的初始化发生在 `Lynx Engine` 的任何接口调用之前；例如可以在 `EntryAbility` 的 `OnCreate` 生命周期中完成初始化。
 
-``` groovy title=EntryAbility.ets
+```ts title=EntryAbility.ets
 import { LLog, LynxEnv } from '@lynx/lynx';
 
 export default class EntryAbility extends UIAbility {
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
+    // Init LynxService
+    // ...
     // Init LynxEnv
     LLog.useSysLog(true);
     LynxEnv.initialize(this.context);
@@ -159,10 +163,10 @@ Bundle 示例:
 
 ```
 entry
-└── src    
-    └── main        
-        └── resources  
-            └── rawfile             
+└── src
+    └── main
+        └── resources
+            └── rawfile
                  └── main.lynx.bundle
 ```
 
@@ -171,7 +175,7 @@ entry
 `LynxTemplateResourceFetcher` 提供了 Bundle 模板资源的加载能力，你需要实现 `fetchTemplate` 方法来完成 Bundle 模板资源的加载。
 
 <CodeFold>
-``` groovy title=ExampleTemplateResourceFetcher.ets
+``` ts title=ExampleTemplateResourceFetcher.ets
 import { LLog, LynxResourceRequest, LynxTemplateResourceFetcher, TemplateProviderResult } from '@lynx/lynx';
 import { AsyncCallback, BusinessError } from '@ohos.base';
 import http from '@ohos.net.http';
@@ -221,7 +225,7 @@ export class ExampleTemplateResourceFetcher extends LynxTemplateResourceFetcher 
 `LynxMediaResourceFetcher` 提供了媒体资源的加载能力。
 
 <CodeFold>
-``` groovy title=ExampleMediaResourceFetcher.ets
+``` ts title=ExampleMediaResourceFetcher.ets
 import { LynxMediaResourceFetcher, LynxResourceRequest, LynxOptionalBool } from '@lynx/lynx';
 
 export class ExampleMediaResourceFetcher extends LynxMediaResourceFetcher {
@@ -242,7 +246,7 @@ export class ExampleMediaResourceFetcher extends LynxMediaResourceFetcher {
 `LynxGenericResourceFetcher` 提供了通用资源的加载能力，你需要实现 `fetchResource` 方法来完成通用资源的加载。
 
 <CodeFold>
-```groovy title=ExampleGenericResourceFetcher.ets
+```ts title=ExampleGenericResourceFetcher.ets
 import { LynxError, LynxSubErrorCode, LynxGenericResourceFetcher, LynxResourceRequest, LynxResourceType, LynxStreamDelegate } from '@lynx/lynx';
 import { AsyncCallback, BusinessError } from '@ohos.base';
 import http from '@ohos.net.http';
@@ -312,7 +316,7 @@ export class ExampleGenericResourceFetcher extends LynxGenericResourceFetcher {
 
 当你完成以上步骤之后，已经完成了 `LynxView` 创建与资源读取的全部工作，即可将对应的 Bundle 内容渲染到 `LynxView` 视图上。
 <CodeFold>
-``` groovy title=Index.ets
+``` ts title=Index.ets
 import {
   LynxTemplateResourceFetcher,
   LynxMediaResourceFetcher,
