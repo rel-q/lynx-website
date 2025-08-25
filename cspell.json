@@ -21,7 +21,8 @@
     "zhangfacheng",
     "ohos",
     "libc",
-    "hilog"
+    "hilog",
+    "ohpm"
   ],
   "maxNumberOfProblems": 1000,
   "useGitignore": true,

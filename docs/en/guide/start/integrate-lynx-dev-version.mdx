@@ -119,6 +119,35 @@ Rebuild your application to ensure all changes take effect.
 </Steps>
 
 </PlatformTabs.Tab>
+
+<PlatformTabs.Tab platform="harmony">
+<Steps>
+### Integrate Lynx
+
+Refer to the [Lynx integration guide](/guide/start/integrate-with-existing-apps.html#platform=harmony) for detailed steps on integrating Lynx.
+
+### Integrate Lynx Devtool
+
+Refer to the [Lynx Devtool integration guide](/guide/start/integrate-lynx-devtool.html#platform=harmony) for detailed steps on integrating Lynx Devtool.
+
+### Switch to the dev version of Lynx
+
+Update your `oh-package.json5` to use the dev versions:
+
+```json5 title="oh-package.json5" {2,5}
+- "@lynx/lynx": "3.4.0",
++ "@lynx/lynx": "3.4.0-dev",
+
+- "@lynx/lynx_devtool": "3.4.0",
++ "@lynx/lynx_devtool": "3.4.0-dev",
+```
+
+### Install Dependencies
+
+Run `ohpm install` or click `Sync and Refresh Project` in DevEco to install dependencies and recompile.
+
+</Steps>
+</PlatformTabs.Tab>
 </PlatformTabs>
 
 Congratulations! You have completed the integration of the Lynx development version.

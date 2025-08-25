@@ -120,6 +120,35 @@ import { PlatformTabs } from '@lynx';
 </Steps>
 
 </PlatformTabs.Tab>
+<PlatformTabs.Tab platform="harmony">
+<Steps>
+### 集成 Lynx
+
+参考 [Lynx 集成指南](/guide/start/integrate-with-existing-apps.html#platform=harmony) 集成 Lynx 组件。
+
+### 集成 Lynx Devtool
+
+参考 [Lynx Devtool 集成指南](/guide/start/integrate-lynx-devtool.html#platform=harmony) 集成 Lynx Devtool 组件。
+
+### 切换为 Lynx 开发版本
+
+在 `oh-package.json5` 里，将 Lynx 组件版本号改为开发版本：
+
+```json5 title="oh-package.json5" {2,5}
+- "@lynx/lynx": "3.4.0",
++ "@lynx/lynx": "3.4.0-dev",
+
+- "@lynx/lynx_devtool": "3.4.0",
++ "@lynx/lynx_devtool": "3.4.0-dev",
+```
+
+### 安装依赖
+
+运行 `ohpm install` 或在 DevEco 点击 `Sync and Refresh Project` 安装依赖，并重新编译。
+
+</Steps>
+</PlatformTabs.Tab>
+
 </PlatformTabs>
 
 恭喜你已完成 Lynx 开发版本的集成！现在，你可以启动 Lynx DevTool 桌面端，使用 LynxTrace 或者 LynxRecorder 工具开始调试和性能分析。
