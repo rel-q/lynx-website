@@ -14,19 +14,19 @@ _2025 年 9 月 25 日_
 
 ![lynx-harmony-background](https://lf-lynx.tiktok-cdns.com/obj/lynx-artifacts-oss-sg/lynx-website/assets/blog/lynx-harmony/lynx-harmony-background1.png)
 
-如[开源博客](/blog/lynx-unlock-native-for-more.html)所介绍，Lynx是一套帮助 Web 开发者复用现有经验，通过一份代码同时构建移动端原生界面与 Web 端界面的技术方案。随着 [**HarmonyOS NEXT**](https://consumer.huawei.com/cn/harmonyos-next/) 的发布，一个纯净的 HarmonyOS 生态正加速到来。
-在这个背景下，Lynx 开发者在 HarmonyOS 场景下面临几个关键挑战：借助 Lynx 开发时，如何高效管理 iOS、Android、HarmonyOS 多端代码、复用既有业务逻辑；如何确保使用 Lynx 开发的应用在 HarmonyOS 上实现流畅的原生体验。
+[**HarmonyOS NEXT**](https://consumer.huawei.com/cn/harmonyos-next/) 的发布推动 HarmonyOS 纯净生态加速成型。据预测 2025 年底 HarmonyOS 安装设备将超 3000 万。用户规模快速增长下，“规模化、高效地” 的跨端方案，已成为丰富 HarmonyOS 应用生态的关键需求。
 
-上述提到的挑战，Lynx 团队一直在积极探索相应的解决方案。
-今天，我们激动地宣布：**Lynx 已经完成对 HarmonyOS 的深度适配，并正式开源**。Lynx 为开发者提供了一套完整、高效的跨端开发解决方案，无缝衔接已有 Android、iOS 等平台业务；并充分利用 HarmonyOS 带来的独特优势，让 HarmonyOS 的原生体验触达更多用户。
+开源方案 Lynx 恰好匹配这一需求。如[ Lynx 开源博客](/blog/lynx-unlock-native-for-more.html)所介绍，Lynx 是一套帮助 Web 开发者复用现有经验，通过一份代码同时构建移动端原生界面与 Web 端界面的技术方案；此前已在多端（Android、iOS、Web）开发中验证了效率优势。若 Lynx 尽快适配 HarmonyOS 并开源，将实现双向增益 —— 对 Lynx 开发者来说，可复用已有业务逻辑、高效管理多端代码，无缝迁移至 HarmonyOS；对 HarmonyOS 生态来说，借助跨端技术方案，降低开发门槛，助力应用生态快速扩容。
 
-## 开发者为什么选择 Lynx on HarmonyOS？
+过去一年多，Lynx 与 OpenHarmony 合作攻克多项行业技术难题。今天，我们激动地宣布：**Lynx 已经完成对 HarmonyOS 的深度适配，在 CSS、组件、API 等维度完整对齐其他平台，现已开源**。Lynx 为开发者提供了一套完整、高效的跨端开发解决方案,并充分利用 HarmonyOS 带来的独特优势，让 HarmonyOS 的原生体验触达更多用户。
+
+## Lynx on HarmonyOS 打动开发者的主要优势
 
 Lynx 的目标是帮助开发者使用其熟悉的 Web 技术栈，构建出具备原生级体验的应用程序。通过与 HarmonyOS 实现的融合，将 Lynx 的高性能渲染引擎与 HarmonyOS 的原生 UI 能力结合到一起，带来以下核心优势：
 
-- **多端代码复用**：一套代码，多端运行。开发者可以使用同一份代码库，同时构建 Android、iOS、Web和 HarmonyOS 应用，提高开发效率和代码可维护性。
+- **多端代码复用**：一次编写，多端运行。开发者可以使用同一份代码库，同时构建 Android、iOS、Web和 HarmonyOS 应用，提高开发效率和代码可维护性。
 - **极致性能**：Lynx 通过与 [ArkUI](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/arkui-overview) 的 [C API](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ndk-build-ui-overview) 深度结合，其渲染指令可以绕开 [ArkTS](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/arkts-overview) 虚拟机的执行开销，直接调用 C API 创建 UI 节点，在 HarmonyOS 上实现接近甚至超越原生 ArkTS 的渲染性能。
-- **元件定制能力**：Lynx 不仅提供了丰富的内置元件，还允许开发者将自己开发的 HarmonyOS 原生组件（通过 ArkTS 实现）封装并注册到 Lynx 运行时中。这意味着开发者可以根据业务需求扩展应用的 UI 能力，实现高度定制化的界面和交互，同时保持原生性能。更多内容参考：[自定义元件的使用指南](/zh/guide/custom-native-component.html#platform=harmony)。
+- **元件定制能力**：Lynx 不仅提供了丰富的内置元件，还允许开发者将自己开发的 HarmonyOS 原生组件（通过 ArkTS 实现）封装并注册到 Lynx 运行时中。这意味着开发者可以根据业务需求扩展应用的 UI 能力，实现高度定制化的界面和交互，保持原生体验。更多内容参考：[自定义元件的使用指南](/zh/guide/custom-native-component.html#platform=harmony)。
 - **原生模块定制能力**：通过 Lynx 的原生模块扩展能力，开发者可以在 JavaScript 中调用 HarmonyOS 的原生 API，无论是系统级的服务还是自定义的原生模块。更多内容参考：[原生模块的使用指南](/zh/guide/use-native-modules.html#platform=harmony)。
 
 ## Lynx on HarmonyOS 实现原理简介
