@@ -3,51 +3,61 @@ date: 2025-9-25
 sidebar: false
 ---
 
-import { BlogAvatar, CodeFold } from '@lynx';
+import { BlogAvatar, CodeFold, VideoList } from '@lynx';
 import { Go } from '@lynx';
 
 _2025 年 9 月 25 日_
 
-# Lynx on HarmonyOS：在多平台上进一步迈向原生体验
+# Announcing Lynx for HarmonyOS
 
 <BlogAvatar list={['baiqiang', 'shiwentao', 'lynx']} />
 
 ![lynx-harmony-background](https://lf-lynx.tiktok-cdns.com/obj/lynx-artifacts-oss-sg/lynx-website/assets/blog/lynx-harmony/lynx-harmony-background1.png)
 
-[**HarmonyOS NEXT**](https://consumer.huawei.com/cn/harmonyos-next/) 的发布推动 HarmonyOS 纯净生态加速成型，据预测 2025 年底 HarmonyOS 安装设备将超 3000 万。用户规模快速增长下，规模化、高效地的跨端方案，已成为丰富 HarmonyOS 应用生态的关键需求。
+如 [Lynx 开源博客](/blog/lynx-unlock-native-for-more.html)所介绍，我们的愿景始终是为 **更多平台与更多用户** 解锁原生能力。随着 [**HarmonyOS NEXT**](https://consumer.huawei.com/cn/harmonyos-next/) 的发布为市场带来新的平台和设备多样性，我们希望 Lynx 开发者也能够像在 Android、iOS 和 Web 上一样，轻松地触达这些用户。
 
-Lynx 方案，也正是应对这一需求的合适选择。如[ Lynx 开源博客](/blog/lynx-unlock-native-for-more.html)所介绍，Lynx 是一套帮助 Web 开发者复用现有经验，通过一份代码同时构建移动端原生界面与 Web 端界面的技术方案；此前已在多端（Android、iOS、Web）开发中验证了效率优势。若 Lynx 快速对 HarmonyOS 的适配并实现开源发布，将实现双向增益 —— 对 Lynx 开发者来说，可复用已有业务逻辑、高效管理多端代码，无缝迁移至 HarmonyOS；对于 HarmonyOS 生态系统而言，通过引入成熟的跨平台技术解决方案，将有效降低开发准入门槛，促进应用生态的快速扩展与繁荣。
+今天，我们很高兴地宣布，**Lynx 现已提供 HarmonyOS 的公开测试版支持**，在 [CSS](/guide/ui/styling.html)、[UI 元件](/api/elements/built-in/view.html)、[API](/api/index.html) 上实现了功能对等，并带来同等级别的性能表现与原生体验。
 
-通过过去一年多的努力，今天，我们激动地宣布：**Lynx 已经完成对 HarmonyOS 的深度适配，在 [CSS 能力](/guide/ui/styling.html)、[核心组件](/api/elements/built-in/view.html)、[APIs](/api/index.html) 等维度完整对齐其他平台，现已开源**。Lynx 为开发者提供了一套完整、高效的跨端开发解决方案，并充分利用 HarmonyOS 带来的独特优势，让 HarmonyOS 的原生体验触达更多用户。
+## 功能对齐的 Lynx for HarmonyOS
 
-## 开发者为什么选择 Lynx on HarmonyOS
+在之前 [教程：产品双列](/guide/start/tutorial-gallery.html) 中，我们使用 Lynx 实现了一个复杂的页面，我们来看一下 Lynx 分别运行 Android 与 HarmonyOS 上的表现；如下图所示，整体能实现像素级对齐。基于此， Lynx 开发者可以做到**一次编写，多端运行**，使用同一份代码库同时构建 Android、iOS、Web 和 HarmonyOS 应用，提高开发效率和代码可维护性。
 
-Lynx 的目标是帮助开发者使用其熟悉的 Web 技术栈，构建出具备原生级体验的应用程序。通过与 HarmonyOS 实现的融合，将 Lynx 的高性能实现与 HarmonyOS 的原生 UI 能力结合到一起，带来以下核心优势：
+<VideoList
+  videos={[
+    {
+      src: 'https://lf-lynx.tiktok-cdns.com/obj/lynx-artifacts-oss-sg/lynx-website/assets/blog/lynx-harmony/ifr-harmony.mp4',
+      title: 'Runing Lynx on HarmonyOS',
+    },
+    {
+      src: 'https://lf-lynx.tiktok-cdns.com/obj/lynx-artifacts-oss-sg/lynx-website/assets/blog/lynx-harmony/ifr-android1.mp4',
+      title: 'Runing Lynx on Android',
+    },
+  ]}
+  playbackRate={1}
+/>
 
-- **多端代码复用**：一次编写，多端运行。开发者可以使用同一份代码库，同时构建 Android、iOS、Web和 HarmonyOS 应用，提高开发效率和代码可维护性。
-- **极致性能**：Lynx 通过与 [ArkUI](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/arkui-overview) 的 [C API](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ndk-build-ui-overview) 深度结合，其渲染指令可以绕开 [ArkTS](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/arkts-overview) 虚拟机的执行开销，直接调用 C API 创建 UI 节点，在 HarmonyOS 上实现接近甚至超越原生 ArkTS 的渲染性能。
-- **元件定制能力**：Lynx 不仅提供了丰富的内置元件，还允许开发者将自己开发的 HarmonyOS 原生组件（通过 ArkTS 实现）封装并注册到 Lynx 运行时中。这意味着开发者可以根据业务需求扩展应用的 UI 能力，实现高度定制化的界面和交互，保持原生体验。更多内容参考：[自定义元件的使用指南](/zh/guide/custom-native-component.html#platform=harmony)。
-- **原生模块定制能力**：通过 Lynx 的原生模块扩展能力，开发者可以在 JavaScript 中调用 HarmonyOS 的原生 API，无论是系统级的服务还是自定义的原生模块。更多内容参考：[原生模块的使用指南](/zh/guide/use-native-modules.html#platform=harmony)。
 
-## Lynx on HarmonyOS 实现原理简介
+Lynx 在 Android、iOS、HarmonyOS 上 CSS、原生组件等功能高度一致得益于 Lynx 的架构实现：**在多平台上 Lynx 的渲染流水线是共用、一致的**。在 HarmonyOS 上，Lynx 渲染指令与 HarmonyOS 的 [ArkUI](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/arkui-overview) 渲染组件对接，进而实现 CSS 属性绘制、动画、自定义组件等。
 
-![lynx-harmony-background](https://lf-lynx.tiktok-cdns.com/obj/lynx-artifacts-oss-sg/lynx-website/assets/blog/lynx-harmony/lynx-harmony-impl.png)
+![lynx-harmony-background](https://lf-lynx.tiktok-cdns.com/obj/lynx-artifacts-oss-sg/lynx-website/assets/blog/lynx-harmony/lynx-harmony-imp.png)
 
-Lynx 引擎渲染指令与 HarmonyOS 的 ArkUI 渲染体系直接对接，让 Lynx on HarmonyOS 上的性能达到最优 —— 这是整体架构的核心。
 
-### 渲染引擎：渲染指令直驱 ArkUI
+## 原生的 Lynx for HarmonyOS
 
-渲染指令对接 ArkUI 组件，进而实现基础的渲染能力，包括节点管理、CSS 属性绘制、动画、自定义组件等。在实现过程中，Lynx 与 OpenHarmony 一起探索了两种对接方式：[ArkTS](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/arkts-ui-development-overview) 与 [C API](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ndk-build-ui-overview)。
+### 渲染指令直驱 ArkUI
+
+Lynx 渲染指令直接对接 ArkUI 组件，Lynx 与 OpenHarmony 一起探索了两种对接方式：[ArkTS](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/arkts-ui-development-overview) 与 [C API](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ndk-build-ui-overview)。
 
 ![lynx-harmony-ui](https://lf-lynx.tiktok-cdns.com/obj/lynx-artifacts-oss-sg/lynx-website/assets/blog/lynx-harmony/lynx-harmony-ui.png)
 
-Lynx on HarmonyOS 最终选择 C API 方式将 Lynx [platform-ui-tree](https://lynxjs.org/guide/spec.html#platform-ui-tree) 直接映射为 HarmonyOS 的原生组件。既能保证 Lynx 的性能优势，同时也能结合 ArkTS 的丰富生态与能力。
+Lynx for HarmonyOS 最终选择 C API 方式将 Lynx [platform-ui-tree](https://lynxjs.org/guide/spec.html#platform-ui-tree) 直接映射为 HarmonyOS 的原生组件。既能保证 Lynx 的性能优势，同时也能结合 ArkTS 的丰富生态与能力。
 
-- **原生组件渲染**：利用了 [ArkUI](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/arkui-overview) 的 [C API](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ndk-build-ui-overview) 将 [element-tree](https://lynxjs.org/guide/spec.html#element-tree) 操作直接转换为对原生 UI 节点的调用，不存在语言间数据传递的转换，在复杂和高频的 UI 更新场景下有明显性能优势。
+- **原生组件渲染**：利用了 [ArkUI](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/arkui-overview) 的 [C API](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ndk-build-ui-overview) 将 [element-tree](https://lynxjs.org/guide/spec.html#element-tree) 操作直接转换为对原生 UI 节点的调用，其渲染指令可以绕开 [ArkTS](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/arkts-overview) 虚拟机的执行开销，不存在语言间数据传递的转换，在 HarmonyOS 上实现接近甚至超越原生 ArkTS 的渲染性能。
 
 - **自定义元件**：通过 HarmonyOS 提供的 [`BuilderNode`](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/arkts-user-defined-arktsnode-buildernode) 和 [`Builder`](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/arkts-builder) 可动态构建 ArkTS 子树，直接嵌入到 Lynx 创建的 ArkUI 节点树，以实现高度定制自定义元件。
 
-### 事件体系：处理复杂交互
+
+### 复杂交互处理
 
 Lynx 在 HarmonyOS 构建了一套完整的事件处理机制，能在复杂交互场景下捕获和响应手势与事件。
 
@@ -92,112 +102,22 @@ Lynx 在 HarmonyOS 构建了一套完整的事件处理机制，能在复杂交�
 
 
 - **自定义 HitTest**：在 Lynx platform-ui-tree 上准确查找响应事件的节点，保障基础交互的准确性。
-- **手势识别**：集成了 HarmonyOS 的手势识别能力如 [`tap`](https://lynxjs.org/api/lynx-api/event/touch-event#tap)、[`longpress`](https://lynxjs.org/api/lynx-api/event/touch-event#longpress) 等，保障在使用 Lynx on HarmonyOS 时拥有与原生一致的手势体验。
+- **手势识别**：集成了 HarmonyOS 的手势识别能力如 [`tap`](https://lynxjs.org/api/lynx-api/event/touch-event#tap)、[`longpress`](https://lynxjs.org/api/lynx-api/event/touch-event#longpress) 等，保障在使用 Lynx for HarmonyOS 时拥有与原生一致的手势体验。
 - **混合场景自定义控制**：提供一系列事件 API，如 [`user-interaction-enabled`](https://lynxjs.org/api/elements/built-in/view.html#user-interaction-enabled) 和 [`block-native-event`](https://lynxjs.org/api/elements/built-in/view.html#block-native-event)，允许开发者可控制事件的穿透和消费逻辑，可高效处理与原生页面的混合滚动等复杂场景。
 
-### LynxView：客户端接入层
+### 原生能力拓展
+- **元件定制能力**：Lynx 不仅提供了丰富的内置元件，还允许开发者将自己开发的 HarmonyOS 原生组件（通过 ArkTS 实现）封装并注册到 Lynx 运行时中。这意味着开发者可以根据业务需求扩展应用的 UI 能力，实现高度定制化的界面和交互，保持原生体验。更多内容参考：[自定义元件的使用指南](/zh/guide/custom-native-component.html#platform=harmony)。
+- **原生模块定制能力**：通过 Lynx 的原生模块扩展能力，开发者可以在 JavaScript 中调用 HarmonyOS 的原生 API，无论是系统级的服务还是自定义的原生模块。更多内容参考：[原生模块的使用指南](/zh/guide/use-native-modules.html#platform=harmony)。
 
-将响应式的 ArkTS 与 Lynx 客户端能力结合，设计了 `LynxView` 组件化 API，为开发者提供了简单的 Lynx 接入方式。
 
-- 使用 `LynxService` 以及 `LynxEnv` 初始化 `LynxView` 执行环境：
-<CodeFold>
-```ts title=EntryAbility.ets {6-8}
-import { LynxServiceCenter, LynxEnv, LynxServiceType } from '@lynx/lynx';
-import { LynxDevToolService } from '@lynx/lynx_devtool_service';
-
-export default class EntryAbility extends UIAbility {
-  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
-    LynxServiceCenter.registerService(LynxServiceType.DevTool, LynxDevToolService.instance);
-    // ...
-    LynxEnv.initialize(this.context);
-    // ...
-  }
-}
-```
-</CodeFold>
-
-- 使用 `LynxView` 加载 `bundle` 即可完成页面渲染：
-
-<CodeFold>
-```ts title=Index.ets {9-16}
-import { LynxServiceCenter, LynxEnv, LynxServiceType, LynxTemplateResourceFetcher, LynxMediaResourceFetcher, LynxGenericResourceFetcher, LynxView, } from '@lynx/lynx';
-// ...
-@Entry
-@Component
-struct Index {
-  private url: string = 'your bundle file';
-  build() {
-    Column() {
-      LynxView({
-        templateResourceFetcher: this.templateResourceFetcher,
-        mediaResourceFetcher: this.mediaResourceFetcher,
-        genericResourceFetcher: this.genericResourceFetcher,
-        url: this.url,
-      }).width('100%').height('100%');
-    }
-    .size({ width: '100%', height: '100%' })
-  }
-}
-````
-</CodeFold>
-
-1. **[LynxView](/api/lynx-native-api/lynx-view/load-template.html#harmony)**：ArkTS 自定义组件，遵循 ArkTS 的生命周期并且自动处理了所有关于模板加载、内存管理和组件复用的等逻辑，开发者只需传入需要的展示 bundle 路径就即可完成渲染。
-
-1. **[LynxResourceFetcher](/api/lynx-native-api/lynx-generic-resource-fetcher/fetch-resource.html#harmony)**：资源加载能力，开发者只需实现该协议，即可将 App 已有的资源加载能力对接给 Lynx，确保 Lynx 可以快速接入到已有的开发体系。
-
-## Lynx on HarmonyOS 开发入门指南
+## 在 HarmonyOS 创建第一个 Lynx 应用
 
 在 Lynx 官网中已经准备好了详细的[开发文档](/guide/start/integrate-with-existing-apps.html)和[示例代码](https://github.com/lynx-family/integrating-lynx-demo-projects/tree/main/harmony/HarmonyEmptyProject)，帮助开发者快速上手。
 
-1. **使用预构建的 Lynx Explorer**：若希望以最便捷的方式开启开发，可以按照[快速上手](/guide/start/quick-start.html)描述的步骤操作安装 Lynx Explorer hap 包上手简单 Lynx 开发。
+1. **使用预构建的 Lynx Explorer**：若希望以最便捷的方式开启开发，可以按照[快速上手](/guide/start/quick-start.html)描述的步骤操作安装 Lynx Explorer hap 包上手 Lynx 开发。
 
-1. **本地构建 Lynx Explorer**：若开发者想对 Lynx on HarmonyOS 的源码有更多的探索，可尝试本地构建，参考[为 Harmony 构建 Lynx Explorer](https://github.com/lynx-family/lynx/tree/develop/explorer/harmony)。
+1. **本地构建 Lynx Explorer**：若开发者想对 Lynx for HarmonyOS 的源码有更多的探索，可尝试本地构建，参考[为 Harmony 构建 Lynx Explorer](https://github.com/lynx-family/lynx/tree/develop/explorer/harmony)。
 
-1. **集成 Lynx 到已有的 APP 工程中**：若开发者已经有自己的 HarmonyOS 应用工程，并希望将 Lynx 集成其中，官网也提供了[集成参考](/guide/start/integrate-with-existing-apps.html#platform=harmony)。
+1. **集成 Lynx 到已有的应用工程中**：若开发者已经有自己的 HarmonyOS 应用工程，并希望将 Lynx 集成其中，官网也提供了[集成参考](/guide/start/integrate-with-existing-apps.html#platform=harmony)。
 
-## 写在最后
-我们使用 Lynx 实现了一个复杂的页面 [教程：产品双列](/guide/start/tutorial-gallery.html) ，在 Android 与 HarmonyOS 上 UI 表现能实现像素级对齐，两者在性能表现和用户体验方面均达到原生应用水准。
-
-<table
-  rules="none"
-  align="center"
-  width="100%"
-  style={{ tableLayout: 'fixed' }}
->
-  <thead align="center">
-    <th colSpan={1}>
-      <span style={{ fontWeight: 'bold' }}>
-        Lynx on HarmonyOS
-      </span>
-    </th>
-    <th colSpan={1}>
-      <span style={{ fontWeight: 'bold' }}>
-        Lynx on Android
-      </span>
-    </th>
-  </thead>
-  <tr >
-    <td style={{ padding: '15px 0 15px 15px' }}>
-      <center>
-        <img
-          loop="infinite"
-          src="https://lf-lynx.tiktok-cdns.com/obj/lynx-artifacts-oss-sg/lynx-website/assets/blog/lynx-harmony/harmony-iFR.gif"
-          style={{ width: '200px',height:'380px',aspectRatio: '1/1' }}
-        />
-      </center>
-    </td>
-  <td style={{ padding: '15px 0 15px 15px' }}>
-      <center>
-        <img
-          loop="infinite"
-          src="https://lf-lynx.tiktok-cdns.com/obj/lynx-artifacts-oss-sg/lynx-website/assets/blog/lynx-harmony/iFR.gif"
-          style={{ width: '200px',height:'380px',aspectRatio: '1/1' }}
-        />
-      </center>
-    </td>
-
-  </tr>
-</table>
-
-今天开源的内容并非 Lynx on HarmonyOS 的全部，未来有更多多端一致的组件以及丰富的 API 开源给开发者使用。Lynx 作为一个在开源领域相对年轻的团队，我们深知在开放协作、社区共建和生态成长方面将会有许多需要学习的地方。
 我们邀请你一同加入 Lynx 社区，一起在 HarmonyOS 上，用 Lynx 构建卓越的原生体验！

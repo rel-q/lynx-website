@@ -7,9 +7,6 @@
 // CodeFold
 export { CodeFold } from './code-fold';
 
-// Image
-export { Image } from './image';
-
 // Containers
 export { default as BrowserContainer } from './containers/BrowserContainer';
 export {
