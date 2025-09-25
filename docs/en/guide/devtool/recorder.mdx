@@ -1,20 +1,28 @@
 import { Tab, Tabs, Steps } from '@rspress/core/theme';
-import { Go } from '@lynx';
+import { Go, PlatformTabs } from '@lynx';
 import { QRCodeSVG } from 'qrcode.react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Button, Toast } from '@douyinfe/semi-ui';
 
 # Recorder
 
-## Introduction
-
 Recorder is a tool designed for the Lynx framework to facilitate the recording and replay of page runtime states. Its core functionality involves precisely capturing the complete state of a page at a specific moment and serializing it into a portable recording file for subsequent high-fidelity replay.
+
+## What it does？
 
 Unlike traditional screen recording technologies, Recorder achieves "Deterministic Replay." During the replay process, the system not only reconstructs the complete UI hierarchy and rendering data from the time of recording but also preserves all page interactivity. Crucially, it achieves temporal consistency by hijacking and mocking time-related APIs, ensuring that time-sensitive operations within the replayed environment yield the same results as they did during the original session.
 
 Recorder features cross-device replay capabilities. Through its integrated Replayer decoder, a recording file can be parsed and replayed on any device that supports the Lynx framework, regardless of hardware model or operating system. For instance, a session recorded on an iPad can be accurately reproduced on an iPhone, an Android device, or even on desktop and TV applications built with the same Lynx technology stack.
 
+## What can you use it for?
+
 As an application's feature set expands, Lynx pages often become tightly coupled with the native application environment. This includes dependencies on custom NativeModules or private cloud services for data and resource management.
+
+<img
+  src="https://lf-lynx.tiktok-cdns.com/obj/lynx-artifacts-oss-sg/plugin/static/recorder_main_page.png"
+  alt="device-connect"
+  width={800}
+/>
 
 When diagnosing complex issues, this strong coupling becomes a major impediment to external collaboration and debugging, leading to problems such as build failures, complex authentication procedures, and inaccessible backend services. In such scenarios, traditional methods like code review are inefficient, while source-level debugging is often impractical due to environmental discrepancies.
 A core design objective of Recorder is to decouple the page from its private environment. A recording file encapsulates all information required for the page to run, including the view hierarchy, data state, and responses from asynchronous requests. During replay, all external dependencies are simulated using the data contained within the recording file, eliminating the need for any live network requests. This makes the debugging process entirely independent of the original production environment.
@@ -168,7 +176,64 @@ The record capability can be integrated simply by using the dev version, with no
 
 Recorder provides a highly encapsulated replay module, which is integrated into your application together with LynxDevTool. You only need to provide a simple entry point as described below.
 
-#### Android
+Choose your target platform to view the specific integration steps:
+
+<PlatformTabs queryKey="platform">
+
+<PlatformTabs.Tab platform="ios">
+
+1. In the Podfile, additionally include LynxRecorder for the LynxDevtool module.
+
+```ruby
+pod 'LynxDevtool', lynxDevVersion, :subspecs => [
+    'Framework',
+    'LynxRecorder'
+]
+```
+
+2. Use LynxRecorderViewController to replay the recorded page.
+
+:::note Swift integration considerations
+
+LynxRecorder is written in Objective-C. If you want to call its methods from a Swift project, you need to provide a corresponding bridge file as described in [Importing Objective-C into Swift](https://developer.apple.com/documentation/swift/importing-objective-c-into-swift).
+
+Add the following content to the bridge file:
+
+```objective-c title="BridgeFile"
+#import <LynxDevtool/LynxRecorderViewController.h>
+```
+
+:::
+
+<Tabs groupId='integrate-lynxrecorder-to-android'>
+<Tab label="Objective-C">
+
+```objective-c
+#import <LynxDevtool/LynxRecorderViewController.h>
+
+LynxRecorderViewController *recorderVC = [[LynxRecorderViewController alloc] init];
+recorderVC.url = @"file://lynxrecorder?url=https://lynx.recorder.artifacts/LynxRecorder.json";
+UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:recorderVC];
+[self presentViewController:nav animated:YES completion:nil];
+```
+
+</Tab>
+
+<Tab label="Swift">
+
+```swift
+let recorderVC = LynxRecorderViewController()
+recorderVC.url = "file://lynxrecorder?url=https://lynx.recorder.artifacts/LynxRecorder.json"
+present(recorderVC, animated: true, completion: nil)
+
+```
+
+</Tab>
+</Tabs>
+
+</PlatformTabs.Tab>
+
+<PlatformTabs.Tab platform="android">
 
 1.  Add a Recorder page entry
 
@@ -239,55 +304,32 @@ class MainActivity :Activity() {
     android:exported="false" />
 ````
 
-#### iOS
+</PlatformTabs.Tab>
 
-1. In the Podfile, additionally include LynxRecorder for the LynxDevtool module.
+<PlatformTabs.Tab platform="harmony">
 
-```ruby
-pod 'LynxDevtool', lynxDevVersion, :subspecs => [
-    'Framework',
-    'LynxRecorder'
-]
+lynx_devtool provides a highly encapsulated `LynxRecorderView` component that enables page replay by simply passing in the recorded artifact URL.
+
+```tsx
+import { LynxRecorderView } from '@lynx/lynx_devtool';
+
+build() {
+  Column() {
+    LynxRecorderView({
+      url: 'file://lynxrecorder?url=https://lynx.recorder.artifacts/LynxRecorder.json'
+    })
+  }.size({ width: '100%', height: '100%' })
+}
 ```
 
-2. Use LynxRecorderViewController to replay the recorded page.
+</PlatformTabs.Tab>
 
-:::note Swift integration considerations
-
-LynxRecorder is written in Objective-C. If you want to call its methods from a Swift project, you need to provide a corresponding bridge file as described in [Importing Objective-C into Swift](https://developer.apple.com/documentation/swift/importing-objective-c-into-swift).
-
-Add the following content to the bridge file:
-
-```swift
-#import <LynxDevtool/LynxRecorderViewController.h>
-```
-
-:::
-
-<Tabs groupId='integrate-lynxrecorder-to-android'>
-<Tab label="Objective-C">
-
-```objective-c
-#import <LynxDevtool/LynxRecorderViewController.h>
-
-LynxRecorderViewController *recorderVC = [[LynxRecorderViewController alloc] init];
-recorderVC.url = @"file://lynxrecorder?url=https://lynx.recorder.artifacts/LynxRecorder.json";
-UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:recorderVC];
-[self presentViewController:nav animated:YES completion:nil];
-```
-
-</Tab>
-
-<Tab label="Swift">
-
-```swift
-let recorderVC = LynxRecorderViewController()
-recorderVC.url = "file://lynxrecorder?url=https://lynx.recorder.artifacts/LynxRecorder.json"
-present(recorderVC, animated: true, completion: nil)
-
-```
-
-</Tab>
-</Tabs>
+</PlatformTabs>
 
 </Steps>
+
+## Compatibility
+
+import { LegacyCompatTable } from '@lynx';
+
+<LegacyCompatTable metadata="devtool/recorder" />
