@@ -2,25 +2,52 @@
 
 `LynxError` is the standard error object returned by the Lynx runtime to indicate runtime failures, warnings, or recoverable issues in your app.
 
-It contains both machine-readable information (error code, subcode, severity) and a human-readable message.
-
-## Overview
-
-| Property     | Type     | Description                                           |
-| ------------ | -------- | ----------------------------------------------------- |
-| `errorCode`  | `int`    | Top-level error code (e.g. 102)                       |
-| `subCode`    | `int`    | More specific error code (e.g. 10203)                 |
-| `level`      | `string` | Severity level: `Fatal`, `Error`, `Warn`, `Undecided` |
-| `msg`        | `string` | Human-readable error message                          |
-| `toString()` | `string` | Full string representation of the error               |
-
----
+It contains both **machine-readable information** (error code, subcode, severity level) and a **human-readable message** to help with debugging and recovery.
 
 ## Use Cases
 
-- Display meaningful errors in debug/development mode
+- Display meaningful errors in debug or development mode
 - Trigger fallback UI or navigation for fatal runtime issues
-- Report issues for analytics or bug tracking
+- Report errors for analytics or bug tracking
+
+---
+
+## Core Concepts
+
+### Error Code
+
+A **3–4 digit number** identifying the category or behavior of an error.
+For example, `301` represents an image loading error.
+
+Refer to the [Error Codes documentation](/api/errors/error-code) for a full list of codes and their meanings.
+
+### Subcode
+
+A **5–6 digit number** derived from the error code, used to specify the exact cause of the error.
+For example, `30101` indicates that the loaded image is too large.
+
+Refer to the [Error Codes documentation](/api/errors/error-code) for details on individual subcodes.
+
+### Level
+
+`LynxError` defines four levels: `Fatal`, `Error`, `Warn`, and `Undecided`.
+
+| Level       | Meaning                | Suggested Action             |
+| ----------- | ---------------------- | ---------------------------- |
+| `Fatal`     | App is likely unusable | Reload or fallback UI        |
+| `Error`     | Recoverable issue      | Log and retry                |
+| `Warn`      | Non-blocking warning   | Log and continue             |
+| `Undecided` | Not yet categorized    | Handle gracefully, log issue |
+
+### Message
+
+A JSON-formatted string containing detailed error information, including:
+
+- `code`
+- `subcode`
+- `level`
+- `message`
+- `suggestion` (optional)
 
 ---
 
@@ -30,32 +57,28 @@ It contains both machine-readable information (error code, subcode, severity) an
 
 | Method           | Return Type | Description            |
 | ---------------- | ----------- | ---------------------- |
-| `getErrorCode()` | `int`       | Returns `errorCode`    |
-| `getSubCode()`   | `int`       | Returns `subCode`      |
-| `getLevel()`     | `String`    | Returns severity level |
-| `getMsg()`       | `String`    | Returns error message  |
-| `toString()`     | `String`    | Full stringified error |
+| `getErrorCode()` | `int`       | Returns the error code |
+| `getSubCode()`   | `int`       | Returns the subcode    |
+| `getLevel()`     | `String`    | Returns the level      |
+| `getMsg()`       | `String`    | Returns the message    |
 
 ### iOS
 
-| Property      | Type        | Description                |
-| ------------- | ----------- | -------------------------- |
-| `errorCode`   | `NSInteger` | Same as above              |
-| `subCode`     | `NSInteger` | —                          |
-| `level`       | `NSString*` | —                          |
-| `msg`         | `NSString*` | —                          |
-| `description` | `NSString*` | Equivalent of `toString()` |
+| Property / Method | Type            | Description                                                                                       |
+| ----------------- | --------------- | ------------------------------------------------------------------------------------------------- |
+| `errorCode`       | `NSInteger`     | Returns the error code                                                                            |
+| `subcode`         | `NSInteger`     | Returns the subcode                                                                               |
+| `level`           | `NSString*`     | Returns the level                                                                                 |
+| `userInfo()`      | `NSDictionary*` | Returns a dictionary where the message can be queried using the key `LynxErrorUserInfoKeyMessage` |
 
----
+### HarmonyOS
 
-## Error Levels
-
-| Level       | Meaning                | Suggested Action             |
-| ----------- | ---------------------- | ---------------------------- |
-| `Fatal`     | App is likely unusable | Reload or fallback UI        |
-| `Error`     | Recoverable issue      | Log or retry                 |
-| `Warn`      | Non-blocking warning   | Log and continue             |
-| `Undecided` | Not yet categorized    | Handle gracefully, log issue |
+| Method           | Type             | Description            |
+| ---------------- | ---------------- | ---------------------- |
+| `getErrorCode()` | `number`         | Returns the error code |
+| `getSubCode()`   | `number`         | Returns the subcode    |
+| `getLevel()`     | `LynxErrorLevel` | Returns the level      |
+| `getMsg()`       | `string`         | Returns the message    |
 
 ---
 
@@ -76,9 +99,9 @@ lynx.onError((err) => {
 
 ```kotlin
 fun onLynxError(error: LynxError) {
-    if (error.level == "Fatal") {
-        println("Fatal error: ${error.msg}")
-    }
+  if (error.level == "Fatal") {
+    println("Fatal error: ${error.msg}")
+  }
 }
 ```
 
@@ -88,6 +111,16 @@ fun onLynxError(error: LynxError) {
 func onLynxError(_ error: LynxError) {
   if error.level == "Fatal" {
     print("Fatal error: \(error.msg)")
+  }
+}
+```
+
+### ETS
+
+```ts
+onLynxError(error: LynxError) {
+  if (error.level == LynxErrorLevel.Fatal) {
+    console.error('Fatal error:', error.getMsg());
   }
 }
 ```

@@ -1,61 +1,84 @@
 # LynxError API
 
-`LynxError` 是 Lynx 运行时返回的用来表示你的应用中发生的失败、警告或可恢复问题的标准错误对象。
+`LynxError` 是 Lynx 运行时返回的标准错误对象，用于表示应用运行时的失败、警告或可恢复问题。
 
-其中它同时包含机器可读的信息（错误码、错误子码、严重性等）和人工可读的消息。
+它同时包含**机器可读的信息**（错误码、子错误码、严重级别）和**人类可读的信息**（错误消息），方便调试与错误处理。
 
-## 总览
+## 使用场景
 
-| 属性         | 类型     | 描述                                                |
-| ------------ | -------- | --------------------------------------------------- |
-| `errorCode`  | `int`    | 顶级错误码 (e.g. 102)                               |
-| `subCode`    | `int`    | 更具体的错误子码 (e.g. 10203)                       |
-| `level`      | `string` | 严重程度等级: `Fatal`, `Error`, `Warn`, `Undecided` |
-| `msg`        | `string` | 人工可读的错误信息                                  |
-| `toString()` | `string` | 完整字串化的错误                                    |
+- 在调试或开发模式下显示有意义的错误信息
+- 当出现致命错误时触发回退界面或导航逻辑
+- 将错误上报到分析或错误追踪系统中
 
 ---
 
-## 用途
+## 核心概念
 
-- 在开发或调试中展示错误信息
-- 为致命运行时问题触发兜底 UI 或跳转
-- 上报问题以进行数据分析或 bug 追踪
+### 错误码（Error Code）
+
+错误码是一个 **3–4 位数字**，用于表示错误的行为或类型。
+例如，代码 `301` 表示图像加载错误。
+
+可参考 [错误码文档](/api/errors/error-code)了解每个错误码的具体含义。
+
+### 子错误码（Sub Code）
+
+子错误码是一个 **5–6 位数字**，由错误码扩展而来，用于标识错误的具体原因。
+例如，子错误码 `30101` 表示加载的图像过大。
+
+可参考 [错误码文档](/api/errors/error-code)了解每个子错误码所代表的具体原因。
+
+### 级别（Level）
+
+`LynxError` 定义了四种错误级别：`Fatal`、`Error`、`Warn` 和 `Undecided`。
+
+| 级别        | 含义                 | 建议操作               |
+| ----------- | -------------------- | ---------------------- |
+| `Fatal`     | 应用可能无法继续使用 | 重新加载或显示回退界面 |
+| `Error`     | 可恢复的错误         | 记录日志并重试操作     |
+| `Warn`      | 不阻塞的警告         | 记录日志并继续执行     |
+| `Undecided` | 尚未分类的错误       | 优雅地处理并记录问题   |
+
+### 消息（Message）
+
+所有错误信息以 JSON 字符串的形式表示，包括以下内容：
+
+- `code`（错误码）
+- `subcode`（子错误码）
+- `level`（错误级别）
+- `message`（错误消息）
+- `suggestion`（修复建议，可选）
 
 ---
 
-## 平台方法
+## 各平台方法
 
 ### Android
 
-| 方法             | 返回类型 | 描述             |
-| ---------------- | -------- | ---------------- |
-| `getErrorCode()` | `int`    | 返回 `errorCode` |
-| `getSubCode()`   | `int`    | 返回 `subCode`   |
-| `getLevel()`     | `String` | 返回严重程度等级 |
-| `getMsg()`       | `String` | 返回错误信息字串 |
-| `toString()`     | `String` | 完整字串化的错误 |
+| 方法             | 返回类型 | 描述         |
+| ---------------- | -------- | ------------ |
+| `getErrorCode()` | `int`    | 返回错误码   |
+| `getSubCode()`   | `int`    | 返回子错误码 |
+| `getLevel()`     | `String` | 返回错误级别 |
+| `getMsg()`       | `String` | 返回错误信息 |
 
 ### iOS
 
-| 属性          | 类型        | 描述                |
-| ------------- | ----------- | ------------------- |
-| `errorCode`   | `NSInteger` | 同上                |
-| `subCode`     | `NSInteger` | —                   |
-| `level`       | `NSString*` | —                   |
-| `msg`         | `NSString*` | —                   |
-| `description` | `NSString*` | 等价于 `toString()` |
+| 属性 / 方法  | 类型            | 描述                                                                         |
+| ------------ | --------------- | ---------------------------------------------------------------------------- |
+| `errorCode`  | `NSInteger`     | 返回错误码                                                                   |
+| `subcode`    | `NSInteger`     | 返回子错误码                                                                 |
+| `level`      | `NSString*`     | 返回错误级别                                                                 |
+| `userInfo()` | `NSDictionary*` | 返回一个 `NSDictionary`，可通过键 `LynxErrorUserInfoKeyMessage` 获取错误消息 |
 
----
+### HarmonyOS
 
-## 错误分级
-
-| 等级        | 含义             | 建议动作                  |
-| ----------- | ---------------- | ------------------------- |
-| `Fatal`     | 应用可能已不可用 | 重新加载或者跳转到兜底 UI |
-| `Error`     | 可恢复的问题     | 记录日志并重试            |
-| `Warn`      | 非阻碍的警告     | 记录日志并继续            |
-| `Undecided` | 尚未分类。       | 记录问题并合理处理        |
+| 方法名           | 类型             | 描述         |
+| ---------------- | ---------------- | ------------ |
+| `getErrorCode()` | `number`         | 返回错误码   |
+| `getSubCode()`   | `number`         | 返回子错误码 |
+| `getLevel()`     | `LynxErrorLevel` | 返回错误级别 |
+| `getMsg()`       | `string`         | 返回错误信息 |
 
 ---
 
@@ -76,9 +99,9 @@ lynx.onError((err) => {
 
 ```kotlin
 fun onLynxError(error: LynxError) {
-    if (error.level == "Fatal") {
-        println("Fatal error: ${error.msg}")
-    }
+  if (error.level == "Fatal") {
+    println("Fatal error: ${error.msg}")
+  }
 }
 ```
 
@@ -88,6 +111,16 @@ fun onLynxError(error: LynxError) {
 func onLynxError(_ error: LynxError) {
   if error.level == "Fatal" {
     print("Fatal error: \(error.msg)")
+  }
+}
+```
+
+### ETS
+
+```ts
+onLynxError(error: LynxError) {
+  if (error.level == LynxErrorLevel.Fatal) {
+    console.error('Fatal error:', error.getMsg());
   }
 }
 ```
