@@ -3,7 +3,7 @@ import type LCD from '@lynx-js/lynx-compat-data';
 import fs from 'fs';
 import path from 'path';
 
-const LCD_BASE_PATH = path.join(
+const LCD_BASE_PATH = path?.join?.(
   __dirname,
   '../../docs/public/lynx-compat-data',
 );
