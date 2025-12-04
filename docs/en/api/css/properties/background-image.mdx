@@ -79,21 +79,24 @@ background-image = <bg-image>#
 
 <url()> = url(<string>)
 
-<gradient> = <linear-gradient()> | <radial-gradient()>
+<gradient> = <linear-gradient()> | <radial-gradient()> | <conic-gradient()>
 
-<linear-gradient()> = 
+<linear-gradient()> =
   linear-gradient( [ <angle> | to <side-or-corner> ]? , <color-stop-list> )
 
-<radial-gradient()> = 
+<radial-gradient()> =
   radial-gradient( [ <ending-shape> || <size> ]? [ at <position> ]? , <color-stop-list> )
 
-<side-or-corner> = 
+<conic-gradient()> =
+  conic-gradient( [ from [ <angle> | <zero> ] ]? [ at <position> ]? , <color-stop-list> )
+
+<side-or-corner> =
   [ left | right ] || [ top | bottom ]
 
-<ending-shape> = 
+<ending-shape> =
   circle | ellipse
 
-<size> = 
+<size> =
   closest-side       |
   farthest-side      |
   closest-corner     |
@@ -101,9 +104,9 @@ background-image = <bg-image>#
   <length>           |
   <length-percentage>{2}
 
-<position> = 
+<position> =
   [ left | center | right ] || [ top | center | bottom ]                            |
-  [ left | center | right | <length-percentage> ] 
+  [ left | center | right | <length-percentage> ]
     [ top | center | bottom | <length-percentage> ]?                                |
   [ [ left | right ] <length-percentage> ] &&
     [ [ top | bottom ] <length-percentage> ]
@@ -123,7 +126,7 @@ background-image = <bg-image>#
   Only support `<url()>` and `<gradient>`.
 
 - `<gradient>`
-  Only support `linear-gradient` and `radial-gradient`.
+  Support `linear-gradient`, `radial-gradient`, and `conic-gradient`(since version 3.6).
 
 - `<linear-color-stop>`
   Not support [`linear-color-hint`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-image#linear-color-hint)
