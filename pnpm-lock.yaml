@@ -295,6 +295,9 @@ importers:
       '@lynx-example/networking':
         specifier: 0.4.6
         version: 0.4.6(@types/react@18.3.18)(react@19.1.1)
+      '@lynx-example/overlay':
+        specifier: latest
+        version: 0.6.6(@types/react@18.3.18)
       '@lynx-example/page':
         specifier: 0.6.4
         version: 0.6.4(@types/react@18.3.18)
@@ -1284,6 +1287,9 @@ packages:
 
   '@lynx-example/networking@0.4.6':
     resolution: {integrity: sha512-v1xmIDcioLASKejZB74oxSX10+hQUDfn0eodP1VgvW0TMVn5KuPATv+iEnGRpDOTpuCL5A8d4Mf9IqFRzsYE/A==}
+
+  '@lynx-example/overlay@0.6.6':
+    resolution: {integrity: sha512-wfs9iuY2QqNx4EFNmG5wohuw27dLkfyY/AaNeRDxv9GAATCCb62OW+QbERWA+ksd13WbRt/rjmzsLNc23KHXpg==}
 
   '@lynx-example/page@0.6.4':
     resolution: {integrity: sha512-BEoL0TnwnDUisBSfeI/6OB8gATIubCbdCLzBfZfNwAgk6hiwMpO4NI1QM92lcZseXoOUJWNEZBALOpN+T8P6JA==}
@@ -6352,6 +6358,13 @@ snapshots:
       - '@lynx-js/types'
       - '@types/react'
       - react
+
+  '@lynx-example/overlay@0.6.6(@types/react@18.3.18)':
+    dependencies:
+      '@lynx-js/react': 0.114.5(@types/react@18.3.18)
+    transitivePeerDependencies:
+      - '@lynx-js/types'
+      - '@types/react'
 
   '@lynx-example/page@0.6.4(@types/react@18.3.18)':
     dependencies:
