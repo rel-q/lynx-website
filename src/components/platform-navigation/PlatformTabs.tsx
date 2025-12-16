@@ -91,7 +91,7 @@ function OptionSelector({
         <Card
           key={option.id}
           className={cn(
-            'sh-flex-1 sh-cursor-pointer sh-transition-colors sh-border-2',
+            'sh-basis-[calc(50%-0.5rem)] sh-max-w-[calc(50%-0.5rem)] sh-flex-grow sh-cursor-pointer sh-transition-colors sh-border-2',
             selected === option.id
               ? 'sh-border-primary sh-bg-primary/10'
               : 'sh-border-muted hover:sh-bg-muted',
@@ -102,7 +102,7 @@ function OptionSelector({
             <PlatformIcon platforms={[option.id]} />
             <Label
               htmlFor={option.id}
-              className="sh-cursor-pointer sh-flex sh-items-center sh-gap-2"
+              className="sh-cursor-pointer sh-flex sh-items-center sh-gap-2 sh-whitespace-nowrap sh-text-center"
             >
               {option.label}
             </Label>
