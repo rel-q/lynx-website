@@ -242,8 +242,8 @@ importers:
         specifier: 0.6.4
         version: 0.6.4(@types/react@18.3.18)
       '@lynx-example/css-api':
-        specifier: 0.7.0
-        version: 0.7.0(@types/react@18.3.18)
+        specifier: 0.7.1
+        version: 0.7.1(@types/react@18.3.18)
       '@lynx-example/element-manipulation':
         specifier: 0.6.4
         version: 0.6.4(@types/react@18.3.18)
@@ -1222,8 +1222,8 @@ packages:
     resolution: {integrity: sha512-k52ujiKNDJh8G2p5IZKhADWrWwwSEZjq8Z0Kh6S6jojn0rSTOiwR9jlWo6OH+taclU7s8R1NDRj+6LbMBAJJ0g==}
     engines: {node: '>=18'}
 
-  '@lynx-example/css-api@0.7.0':
-    resolution: {integrity: sha512-2C9F+gD41FQYyDpojADHfmfrBkWRhpW5nLW+JPkHJn4K1lUMJ36L92Uc1GJJ6sRstCwpnXj0Y1UaqN/IbdYVlw==}
+  '@lynx-example/css-api@0.7.1':
+    resolution: {integrity: sha512-HVhnUjr+LDlRaxMpUh51laYgR2U3k8IsbSfkitVFHLsEC2sF+6/RqTCGoIRhYGozjqasgWtNtVoNqCXXWxGpwQ==}
     engines: {node: '>=18'}
 
   '@lynx-example/css@0.6.4':
@@ -1353,6 +1353,15 @@ packages:
 
   '@lynx-js/react@0.114.5':
     resolution: {integrity: sha512-SMgVHSbM3YLrrkl4zhvyjKlVo4N4MQWOe+Ni6sFqkubj5ozdkCdlI9BnNGnbE5RS3Q+bu3+qSa4DBG6Qi2phIw==}
+    peerDependencies:
+      '@lynx-js/types': '*'
+      '@types/react': ^18
+    peerDependenciesMeta:
+      '@lynx-js/types':
+        optional: true
+
+  '@lynx-js/react@0.115.1':
+    resolution: {integrity: sha512-htZXSUmKI/7NI5hPMBcv2zN8CRJ+Yq8TaHX2nk3oJyZzQdIzo+L9IbtVx1GwRRMsC3PmkdKX9Wiqgtjle0MolQ==}
     peerDependencies:
       '@lynx-js/types': '*'
       '@types/react': ^18
@@ -6229,9 +6238,9 @@ snapshots:
       - '@lynx-js/types'
       - '@types/react'
 
-  '@lynx-example/css-api@0.7.0(@types/react@18.3.18)':
+  '@lynx-example/css-api@0.7.1(@types/react@18.3.18)':
     dependencies:
-      '@lynx-js/react': 0.114.5(@types/react@18.3.18)
+      '@lynx-js/react': 0.115.1(@types/react@18.3.18)
     transitivePeerDependencies:
       - '@lynx-js/types'
       - '@types/react'
@@ -6465,6 +6474,11 @@ snapshots:
       preact: '@hongzhiyuan/preact@10.24.0-00213bad'
 
   '@lynx-js/react@0.114.5(@types/react@18.3.18)':
+    dependencies:
+      '@types/react': 18.3.18
+      preact: '@hongzhiyuan/preact@10.24.0-00213bad'
+
+  '@lynx-js/react@0.115.1(@types/react@18.3.18)':
     dependencies:
       '@types/react': 18.3.18
       preact: '@hongzhiyuan/preact@10.24.0-00213bad'
