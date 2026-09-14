@@ -3,7 +3,7 @@ title: Media Query
 api: css/at-rule/media-query
 ---
 
-import { APISummary, APITable } from '@lynx';
+import { APISummary, APITable, Go } from '@lynx';
 
 # Media Query
 
@@ -27,7 +27,19 @@ export default defineConfig({
 });
 ```
 
-`enableCSSRule` requires Lynx SDK or Clay 4.0 or later. Without it, `@media` rules are not encoded into the template and do not take effect at runtime.
+`enableCSSRule` requires Lynx SDK 4.0 or later. Without it, `@media` rules are not encoded into the template and do not take effect at runtime.
+
+## Example
+
+This example evaluates media queries for portrait viewport width, height, and pixel density.
+
+<Go
+  example="css"
+  defaultFile="src/media_query/index.tsx"
+  defaultEntryFile="dist/media_query.lynx.bundle"
+  entry="src/media_query"
+  img="https://lf-lynx.tiktok-cdns.com/obj/lynx-artifacts-oss-sg/lynx-website/assets/doc/media-query-portrait-ranges.png"
+/>
 
 ## Syntax Support
 
@@ -175,38 +187,6 @@ Lynx has a screen rendering context only:
 ### Invalid Query Lists Use `not all`
 
 When an entire media query list is invalid, Lynx replaces it with `not all`, so it never matches. In a comma-separated list, invalid entries are discarded while valid entries continue to participate in OR matching.
-
-## Usage Examples
-
-```css
-/* Responsive layout */
-@media (min-width: 768px) {
-  .container {
-    flex-direction: row;
-  }
-}
-
-/* Dark mode */
-@media (prefers-color-scheme: dark) {
-  .card {
-    background-color: #1a1a1a;
-  }
-}
-
-/* High-DPR devices */
-@media (min-resolution: 2dppx) {
-  .logo {
-    background-image: url('logo@2x.png');
-  }
-}
-
-/* Level 4 range syntax */
-@media (400px <= width <= 800px) {
-  .sidebar {
-    display: none;
-  }
-}
-```
 
 ## Compatibility
 

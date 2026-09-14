@@ -2,7 +2,7 @@
 api: css/at-rule/media-query
 ---
 
-import { APISummary, APITable } from '@lynx';
+import { APISummary, APITable, Go } from '@lynx';
 
 # 媒体查询
 
@@ -26,7 +26,19 @@ export default defineConfig({
 });
 ```
 
-`enableCSSRule` 要求 Lynx SDK 或 Clay 4.0 及更高版本。未启用时，`@media` 规则不会被编码到模板中，也不会在运行时生效。
+`enableCSSRule` 要求 Lynx SDK 4.0 及更高版本。未启用时，`@media` 规则不会被编码到模板中，也不会在运行时生效。
+
+## 示例
+
+此示例会根据竖屏视口的宽度、高度和像素密度匹配不同的媒体查询。
+
+<Go
+  example="css"
+  defaultFile="src/media_query/index.tsx"
+  defaultEntryFile="dist/media_query.lynx.bundle"
+  entry="src/media_query"
+  img="https://lf-lynx.tiktok-cdns.com/obj/lynx-artifacts-oss-sg/lynx-website/assets/doc/media-query-portrait-ranges.png"
+/>
 
 ## 语法支持
 
@@ -174,38 +186,6 @@ Lynx 只有屏幕渲染上下文：
 ### 无效查询列表会使用 `not all`
 
 当整个媒体查询列表都无效时，Lynx 会将其替换为 `not all`，因此不会匹配。对于逗号分隔的列表，无效项会被丢弃，合法项仍以 OR 语义参与匹配。
-
-## 使用示例
-
-```css
-/* 响应式布局 */
-@media (min-width: 768px) {
-  .container {
-    flex-direction: row;
-  }
-}
-
-/* 暗色模式 */
-@media (prefers-color-scheme: dark) {
-  .card {
-    background-color: #1a1a1a;
-  }
-}
-
-/* 高 DPR 设备 */
-@media (min-resolution: 2dppx) {
-  .logo {
-    background-image: url('logo@2x.png');
-  }
-}
-
-/* Level 4 范围语法 */
-@media (400px <= width <= 800px) {
-  .sidebar {
-    display: none;
-  }
-}
-```
 
 ## 兼容性
 
